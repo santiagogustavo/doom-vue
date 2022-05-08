@@ -25,6 +25,7 @@ class InputController {
     this.onMouseMove = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
+    this.key = this.key.bind(this);
     this.update = this.update.bind(this);
   }
 
@@ -104,6 +105,10 @@ class InputController {
 
   onKeyUp(e) {
     this.keys[e.keyCode] = false;
+  }
+
+  key(keyCode) {
+    return !!this.keys[keyCode];
   }
 
   update() {
