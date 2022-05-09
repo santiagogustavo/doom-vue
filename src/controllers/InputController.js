@@ -31,7 +31,11 @@ class InputController {
 
   requestPointerLock(domElement) {
     domElement.requestPointerLock();
-    document.addEventListener('pointerlockchange', () => this.lockChangeAlert(domElement), false);
+    document.addEventListener(
+      'pointerlockchange',
+      () => this.lockChangeAlert(domElement),
+      false
+    );
   }
 
   lockChangeAlert(domElement) {
@@ -65,9 +69,11 @@ class InputController {
     switch (e.button) {
       case 0: {
         this.current.leftButton = false;
+        break;
       }
       case 2: {
         this.current.rightButton = false;
+        break;
       }
       default:
         break;
@@ -78,9 +84,11 @@ class InputController {
     switch (e.button) {
       case 0: {
         this.current.leftButton = true;
+        break;
       }
       case 2: {
         this.current.rightButton = true;
+        break;
       }
       default:
         break;

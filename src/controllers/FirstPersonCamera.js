@@ -1,9 +1,8 @@
 import { Quaternion, Vector3 } from 'three';
 
 import { KEYS } from '@/constants/keys';
-import InputController from '@/utils/InputController';
-
-const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+import InputController from '@/controllers/InputController';
+import { clamp } from '@/utils/math';
 
 class FirstPersonCamera {
   constructor(camera, domElement, configs) {
@@ -36,7 +35,7 @@ class FirstPersonCamera {
     this.input.update(timeElapsed);
   }
 
-  updateRotation(timeElapsed) {
+  updateRotation() {
     const xh = this.input.current.mouseXDelta / window.innerWidth;
     const yh = this.input.current.mouseYDelta / window.innerHeight;
 
@@ -61,7 +60,8 @@ class FirstPersonCamera {
   }
 
   updateTranslation(timeElapsed) {
-    const forwardVelocity = (this.input.key(KEYS.w) ? 1 : 0) + (this.input.key(KEYS.s) ? -1 : 0);
+    const forwardVelocity =
+      (this.input.key(KEYS.w) ? 1 : 0) + (this.input.key(KEYS.s) ? -1 : 0);
     const strafeVelocity =
       (this.input.key(KEYS.a) ? 1 : 0) + (this.input.key(KEYS.d) ? -1 : 0);
 
@@ -87,10 +87,13 @@ class FirstPersonCamera {
   updateHeadBob(timeElapsed) {
     if (this.headBobActive) {
       const wavelength = Math.PI;
-      const nextStep = 1 + Math.floor(((this.headBobTimer + 0.000001) * 10) / wavelength);
-      const nextStepTime = nextStep * wavelength / 10;
-      // this.headBobTimer += timeElapsed;
-      this.headBobTimer = Math.min(this.headBobTimer + timeElapsed, nextStepTime);
+      const nextStep =
+        1 + Math.floor(((this.headBobTimer + 0.000001) * 10) / wavelength);
+      const nextStepTime = (nextStep * wavelength) / 10;
+      this.headBobTimer = Math.min(
+        this.headBobTimer + timeElapsed,
+        nextStepTime
+      );
 
       if (this.headBobTimer === nextStepTime) {
         this.headBobActive = false;
@@ -98,7 +101,7 @@ class FirstPersonCamera {
     }
   }
 
-  updateCamera(timeElapsed) {
+  updateCamera() {
     this.camera.quaternion.copy(this.rotation);
     this.camera.position.copy(this.translation);
     this.camera.position.y += Math.sin(this.headBobTimer * 15) * 0.2;

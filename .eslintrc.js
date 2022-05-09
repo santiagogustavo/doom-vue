@@ -4,7 +4,16 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['plugin:vue/vue3-recommended', 'prettier'],
-  plugins: [],
-  rules: {},
+  parser: 'vue-eslint-parser',
+  extends: [
+    'eslint:recommended',
+    'plugin:prettier/recommended',
+    'plugin:vue/vue3-recommended',
+    'prettier',
+  ],
+  plugins: ['prettier'],
+  rules: {
+    'vue/multi-word-component-names': 'off',
+  },
+  ignorePatterns: ['dist'],
 };

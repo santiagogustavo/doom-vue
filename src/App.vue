@@ -1,7 +1,7 @@
 <template>
   <Renderer ref="rendererC" antialias resize="window">
     <div class="crosshair" />
-    <Camera ref="cameraC" :aspect="aspect" :fov="fov" />
+    <Player :renderer="rendererC" />
     <Scene>
       <Box ref="meshC" :size="1" :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }">
         <LambertMaterial />
@@ -26,62 +26,20 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, onMounted, onUnmounted, computed } from 'vue';
-import { useStore } from 'vuex';
-import {
-  Box,
-  Camera,
-  LambertMaterial,
-  PointLight,
-  Renderer,
-  Scene,
-} from 'troisjs';
-import { Clock } from 'three';
-
-import FirstPersonCamera from '@/utils/FirstPersonCamera';
-
-const clock = new Clock(true);
-const store = useStore();
+import { ref, onMounted } from 'vue';
+import { Box, LambertMaterial, PointLight, Renderer, Scene } from 'troisjs';
+import Player from '@/entities/Player.vue';
 
 const rendererC = ref();
-const cameraC = ref();
 const meshC = ref();
 
-const aspect = ref(window.innerWidth / window.innerHeight);
-
-const playerHeight = computed(() => store.getters['Player/getHeight']);
-const fov = computed(() => store.getters['Player/getFov']);
-const lookSpeed = computed(() => store.getters['Player/getLookSpeed']);
-const moveSpeed = computed(() => store.getters['Player/getMoveSpeed']);
-
-const updateAspectRatio = () => {
-  aspect.value = window.innerWidth / window.innerHeight;
-};
-
-onBeforeMount(() => {
-  window.addEventListener('resize', updateAspectRatio);
-});
-
 onMounted(() => {
-  const camera = cameraC.value.camera;
   const renderer = rendererC.value;
-
-  const controls = new FirstPersonCamera(camera, document.body, {
-    playerHeight: playerHeight.value,
-    lookSpeed: lookSpeed.value,
-    moveSpeed: moveSpeed.value,
-    bobbing: false,
-  });
 
   const mesh = meshC.value.mesh;
   renderer.onBeforeRender(() => {
     mesh.rotation.x += 0.01;
-    controls.update(clock.getDelta());
   });
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updateAspectRatio);
 });
 </script>
 
