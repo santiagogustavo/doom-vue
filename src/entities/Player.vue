@@ -1,5 +1,6 @@
 <template>
-  <Camera ref="cameraC" :aspect="aspect" :fov="fov" />
+  <Weapon ref="weaponC" />
+  <Camera ref="cameraC" :aspect="aspect" />
 </template>
 
 <script>
@@ -21,6 +22,7 @@ import { useStore } from 'vuex';
 import { Clock } from 'three';
 
 import FirstPersonCamera from '@/controllers/FirstPersonCamera';
+import Weapon from '@/entities/Weapon.vue';
 
 const clock = new Clock(true);
 const store = useStore();
@@ -33,8 +35,10 @@ watch(
   () => props.renderer,
   (renderer) => {
     const camera = cameraC.value.camera;
+    const weapon = weaponC.value;
 
-    const controls = new FirstPersonCamera(camera, document.body, {
+    const controls = new FirstPersonCamera(camera, weapon, document.body, {
+      fov: fov.value,
       playerHeight: playerHeight.value,
       lookSpeed: lookSpeed.value,
       moveSpeed: moveSpeed.value,
@@ -48,10 +52,11 @@ watch(
 );
 
 const cameraC = ref();
+const weaponC = ref();
 
 const aspect = ref(window.innerWidth / window.innerHeight);
-const fov = computed(() => store.getters['Player/getFov']);
 
+const fov = computed(() => store.getters['Player/getFov']);
 const playerHeight = computed(() => store.getters['Player/getHeight']);
 const lookSpeed = computed(() => store.getters['Player/getLookSpeed']);
 const moveSpeed = computed(() => store.getters['Player/getMoveSpeed']);

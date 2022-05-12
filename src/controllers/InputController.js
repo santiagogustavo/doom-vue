@@ -20,21 +20,24 @@ class InputController {
     this.keys = {};
     this.previousKeys = {};
 
-    this.onMouseDown = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseUp.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
+    this.addListeners = this.addListeners.bind(this);
+    this.removeListeners = this.removeListeners.bind(this);
+    this.lockChangeAlert = this.lockChangeAlert.bind(this);
     this.key = this.key.bind(this);
     this.update = this.update.bind(this);
+
+    this.listening = false;
   }
 
   requestPointerLock(domElement) {
     domElement.requestPointerLock();
-    document.addEventListener(
-      'pointerlockchange',
-      () => this.lockChangeAlert(domElement),
-      false
+    document.addEventListener('pointerlockchange', () =>
+      this.lockChangeAlert(domElement)
     );
   }
 
@@ -43,9 +46,13 @@ class InputController {
       document.pointerLockElement === domElement ||
       document.mozPointerLockElement === domElement
     ) {
-      this.addListeners(domElement);
+      if (!this.listening) {
+        this.addListeners(document.pointerLockElement);
+      }
     } else {
-      this.removeListeners(domElement);
+      if (this.listening) {
+        this.removeListeners(domElement);
+      }
     }
   }
 
@@ -55,6 +62,7 @@ class InputController {
     domElement.addEventListener('mousemove', this.onMouseMove, false);
     domElement.addEventListener('keydown', this.onKeyDown, false);
     domElement.addEventListener('keyup', this.onKeyUp, false);
+    this.listening = true;
   }
 
   removeListeners(domElement) {
@@ -63,16 +71,17 @@ class InputController {
     domElement.removeEventListener('mousemove', this.onMouseMove);
     domElement.removeEventListener('keydown', this.onKeyDown);
     domElement.removeEventListener('keyup', this.onKeyUp);
+    this.listening = false;
   }
 
   onMouseDown(e) {
     switch (e.button) {
       case 0: {
-        this.current.leftButton = false;
+        this.current.leftButton = true;
         break;
       }
       case 2: {
-        this.current.rightButton = false;
+        this.current.rightButton = true;
         break;
       }
       default:
@@ -83,11 +92,11 @@ class InputController {
   onMouseUp(e) {
     switch (e.button) {
       case 0: {
-        this.current.leftButton = true;
+        this.current.leftButton = false;
         break;
       }
       case 2: {
-        this.current.rightButton = true;
+        this.current.rightButton = false;
         break;
       }
       default:

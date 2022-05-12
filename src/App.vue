@@ -1,8 +1,8 @@
 <template>
   <Renderer ref="rendererC" antialias resize="window">
-    <div class="crosshair" />
-    <Player :renderer="rendererC" />
     <Scene>
+      <div class="crosshair" />
+      <Player :renderer="rendererC" />
       <Box ref="meshC" :size="1" :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }">
         <LambertMaterial />
       </Box>
@@ -46,6 +46,7 @@ onMounted(() => {
 <style>
 body {
   margin: 0;
+  overflow: hidden;
 }
 canvas {
   display: block;
