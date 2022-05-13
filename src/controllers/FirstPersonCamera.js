@@ -26,18 +26,27 @@ class FirstPersonCamera {
     this.isBobbingEnabled = configs.bobbing;
 
     this.update = this.update.bind(this);
+    this.updateShoot = this.updateShoot.bind(this);
+    this.updateZoom = this.updateZoom.bind(this);
     this.updateRotation = this.updateRotation.bind(this);
     this.updateTranslation = this.updateTranslation.bind(this);
     this.updateCamera = this.updateCamera.bind(this);
   }
 
   update(timeElapsed) {
+    this.updateShoot(timeElapsed);
     this.updateZoom(timeElapsed);
     this.updateRotation(timeElapsed);
     this.updateTranslation(timeElapsed);
     this.updateHeadBob(timeElapsed);
     this.updateCamera(timeElapsed);
     this.input.update(timeElapsed);
+  }
+
+  updateShoot() {
+    if (this.input.current.leftButton) {
+      this.weapon.shoot();
+    }
   }
 
   updateZoom(timeElapsed) {
