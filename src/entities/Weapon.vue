@@ -13,6 +13,7 @@ export default {
 
 <script setup>
 import { ref, computed, watch, defineExpose } from 'vue';
+
 import PistolIdle from '@/assets/sprites/weapons/pistol/idle.png';
 import PistolShoot1 from '@/assets/sprites/weapons/pistol/shoot_1.png';
 import PistolShoot2 from '@/assets/sprites/weapons/pistol/shoot_2.png';
@@ -20,7 +21,9 @@ import PistolShoot3 from '@/assets/sprites/weapons/pistol/shoot_3.png';
 import PistolShoot4 from '@/assets/sprites/weapons/pistol/shoot_4.png';
 import Muzzle from '@/assets/sprites/weapons/pistol/muzzle.png';
 
-const animationSpeed = 50;
+import { timeout } from '@/utils/promise';
+
+const animationSpeed = 80;
 
 const setSprite = (frame) => {
   switch (frame) {
@@ -54,24 +57,32 @@ watch(AnimationState, (next) => {
 
 const shootAnimationFrames = () => {
   isAnimationPlaying.value = true;
-  showMuzzle.value = true;
-  setTimeout(() => {
-    showMuzzle.value = false;
+  timeout(() => {
+    showMuzzle.value = true;
     AnimationState.value = 1;
-  }, animationSpeed * 1);
-  setTimeout(() => {
-    AnimationState.value = 2;
-  }, animationSpeed * 2);
-  setTimeout(() => {
-    AnimationState.value = 3;
-  }, animationSpeed * 3);
-  setTimeout(() => {
-    AnimationState.value = 4;
-  }, animationSpeed * 4);
-  setTimeout(() => {
-    isAnimationPlaying.value = false;
-    AnimationState.value = 0;
-  }, animationSpeed * 5);
+  }, animationSpeed)
+    .then(() =>
+      timeout(() => {
+        showMuzzle.value = false;
+        AnimationState.value = 2;
+      }, animationSpeed)
+    )
+    .then(() =>
+      timeout(() => {
+        AnimationState.value = 3;
+      }, animationSpeed)
+    )
+    .then(() =>
+      timeout(() => {
+        AnimationState.value = 4;
+      }, animationSpeed)
+    )
+    .then(() =>
+      timeout(() => {
+        isAnimationPlaying.value = false;
+        AnimationState.value = 0;
+      }, animationSpeed)
+    );
 };
 
 const shoot = () => {
@@ -88,7 +99,7 @@ defineExpose({ shoot });
 .player-weapon {
   user-select: none;
   position: absolute;
-  bottom: -8px;
+  bottom: -16px;
 
   &__sprite {
     margin-top: auto;
@@ -100,8 +111,8 @@ defineExpose({ shoot });
 
 .muzzle {
   position: absolute;
-  top: -85px;
-  left: calc(50% - 60px);
+  top: -80px;
+  left: calc(50% - 14px);
   width: 150px;
   height: 150px;
   image-rendering: pixelated;
