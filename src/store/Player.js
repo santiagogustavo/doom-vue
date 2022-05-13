@@ -4,7 +4,7 @@ export default {
     height: 1.8,
     fov: 90,
     speed: {
-      move: 5,
+      move: 6,
       look: 3,
     },
   }),

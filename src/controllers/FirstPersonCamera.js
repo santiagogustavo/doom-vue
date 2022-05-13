@@ -118,8 +118,8 @@ class FirstPersonCamera {
       if (this.headBobTimer === nextStepTime) {
         this.headBobActive = false;
       }
-      this.headBobPosition += Math.sin(this.headBobTimer * 16);
-      this.headBobPositionX -= Math.sin(this.headBobTimer * 8);
+      this.headBobPosition = Math.sin(this.headBobTimer * 16) * 8;
+      this.headBobPositionX = Math.sin(this.headBobTimer * 8) * 8;
     }
   }
 

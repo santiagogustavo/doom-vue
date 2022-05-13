@@ -18,11 +18,11 @@ import PistolIdle from '@/assets/sprites/weapons/pistol/idle.png';
 .player-weapon {
   user-select: none;
   position: absolute;
-  width: 200px;
-  height: 200px;
-  bottom: 0;
+  width: 250px;
+  height: 250px;
+  bottom: -8px;
   /* middle of the screen - sprite offset - bobbing offset */
-  left: calc(50% - 110px - 4px);
+  left: calc(50% - 125px - 8px);
 
   &__sprite {
     image-rendering: pixelated;
