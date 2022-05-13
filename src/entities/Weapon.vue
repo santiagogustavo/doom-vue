@@ -116,22 +116,22 @@ defineExpose({ shoot });
   &--frame-1 {
     width: 325px;
     height: 325px;
-    left: calc(50% - 212px - 8px);
+    left: calc(50% - 210px - 8px);
   }
   &--frame-2 {
     width: 325px;
     height: 325px;
-    left: calc(50% - 190px - 8px);
+    left: calc(50% - 150px - 8px);
   }
   &--frame-3 {
     width: 325px;
     height: 325px;
-    left: calc(50% - 180px - 8px);
+    left: calc(50% - 130px - 8px);
   }
   &--frame-4 {
     width: 325px;
     height: 325px;
-    left: calc(50% - 180px - 8px);
+    left: calc(50% - 150px - 8px);
   }
 }
 </style>
