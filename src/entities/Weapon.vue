@@ -81,7 +81,7 @@ const shootAnimationFrames = () => {
     )
     .then(() =>
       timeout(() => {
-        AnimationState.value = 3;
+        AnimationState.value = 1;
       }, animationSpeed)
     )
     .then(() =>
