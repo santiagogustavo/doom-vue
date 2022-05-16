@@ -1,5 +1,5 @@
 <template>
-  <div :class="className">
+  <div class="player-weapon">
     <img v-if="showMuzzle" class="muzzle" :src="Muzzle" />
     <img class="player-weapon__sprite" :src="Sprite" />
   </div>
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, watch, defineExpose } from 'vue';
+import { ref, watch, defineExpose } from 'vue';
 
 import PistolIdle from '@/assets/sprites/weapons/pistol/idle.png';
 import PistolShoot1 from '@/assets/sprites/weapons/pistol/shoot_1.png';
@@ -23,7 +23,7 @@ import Muzzle from '@/assets/sprites/weapons/pistol/muzzle.png';
 
 import { timeout } from '@/utils/promise';
 
-const animationSpeed = 80;
+const animationSpeed = 75;
 
 const setSprite = (frame) => {
   switch (frame) {
@@ -46,10 +46,6 @@ const AnimationState = ref(0);
 const Sprite = ref(setSprite(AnimationState.value));
 const isAnimationPlaying = ref(false);
 const showMuzzle = ref(false);
-
-const className = computed(
-  () => `player-weapon pistol--frame-${AnimationState.value}`
-);
 
 watch(AnimationState, (next) => {
   Sprite.value = setSprite(next);
@@ -79,6 +75,11 @@ const shootAnimationFrames = () => {
     )
     .then(() =>
       timeout(() => {
+        AnimationState.value = 3;
+      }, animationSpeed)
+    )
+    .then(() =>
+      timeout(() => {
         isAnimationPlaying.value = false;
         AnimationState.value = 0;
       }, animationSpeed)
@@ -100,6 +101,9 @@ defineExpose({ shoot });
   user-select: none;
   position: absolute;
   bottom: -16px;
+  width: 400px;
+  height: 400px;
+  left: calc(50% - 210px - 8px);
 
   &__sprite {
     margin-top: auto;
@@ -111,38 +115,9 @@ defineExpose({ shoot });
 
 .muzzle {
   position: absolute;
-  top: -80px;
-  left: calc(50% - 14px);
+  left: calc(50% - 55px);
   width: 150px;
   height: 150px;
   image-rendering: pixelated;
-}
-
-.pistol {
-  &--frame-0 {
-    width: 250px;
-    height: 250px;
-    left: calc(50% - 125px - 8px);
-  }
-  &--frame-1 {
-    width: 325px;
-    height: 325px;
-    left: calc(50% - 210px - 8px);
-  }
-  &--frame-2 {
-    width: 325px;
-    height: 325px;
-    left: calc(50% - 150px - 8px);
-  }
-  &--frame-3 {
-    width: 325px;
-    height: 325px;
-    left: calc(50% - 130px - 8px);
-  }
-  &--frame-4 {
-    width: 325px;
-    height: 325px;
-    left: calc(50% - 150px - 8px);
-  }
 }
 </style>
