@@ -5,7 +5,7 @@ import path from 'path';
 export default defineConfig({
   base: './',
   plugins: [vue()],
-  assetsInclude: ['**/*.fbx'],
+  assetsInclude: ['**/*.fbx', '**/*.wav'],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

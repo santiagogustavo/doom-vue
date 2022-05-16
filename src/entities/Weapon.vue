@@ -2,6 +2,7 @@
   <div class="player-weapon">
     <img v-if="showMuzzle" class="muzzle" :src="Muzzle" />
     <img class="player-weapon__sprite" :src="Sprite" />
+    <audio id="player-weapon__sfx--shoot" :src="ShootSfx"></audio>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import PistolShoot2 from '@/assets/sprites/weapons/pistol/shoot_2.png';
 import PistolShoot3 from '@/assets/sprites/weapons/pistol/shoot_3.png';
 import PistolShoot4 from '@/assets/sprites/weapons/pistol/shoot_4.png';
 import Muzzle from '@/assets/sprites/weapons/pistol/muzzle.png';
+import ShootSfx from '@/assets/sounds/weapons/pistol/shoot.wav';
 
 import { timeout } from '@/utils/promise';
 
@@ -50,6 +52,10 @@ const showMuzzle = ref(false);
 watch(AnimationState, (next) => {
   Sprite.value = setSprite(next);
 });
+
+const shootPlaySfx = () => {
+  document.getElementById('player-weapon__sfx--shoot').cloneNode().play();
+};
 
 const shootAnimationFrames = () => {
   isAnimationPlaying.value = true;
@@ -88,8 +94,8 @@ const shootAnimationFrames = () => {
 
 const shoot = () => {
   if (!isAnimationPlaying.value) {
-    console.log('pew');
     shootAnimationFrames();
+    shootPlaySfx();
   }
 };
 
