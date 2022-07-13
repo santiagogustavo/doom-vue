@@ -24,6 +24,15 @@ import Muzzle from '@/assets/sprites/weapons/pistol/muzzle.png';
 import ShootSfx from '@/assets/sounds/weapons/pistol/shoot.wav';
 
 import { timeout } from '@/utils/promise';
+import { preloadImage, preloadAudio } from '@/utils/preload';
+
+preloadImage(PistolIdle);
+preloadImage(PistolShoot1);
+preloadImage(PistolShoot2);
+preloadImage(PistolShoot3);
+preloadImage(PistolShoot4);
+preloadImage(Muzzle);
+preloadAudio(ShootSfx);
 
 const animationSpeed = 75;
 
